@@ -1,0 +1,265 @@
+%-------------------------------------------------------------------------------
+%************************ MIMO ************************************************* 
+%-------------------------------------------------------------------------------
+
+%-------------------------------------------------------------------------------
+% Meta-learning Based Beamforming Design for MISO Downlink
+
+%Abstract Downlink beamforming is an essential technology for wireless cellular networks; however, the design of beamforming vectors that maximize the weighted sum rate (WSR) is an NP-hard problem and iterative algorithms are typically applied to solve it. The weighted minimum mean square error (WMMSE) algorithm is the most widely used one, which iteratively minimizes the WSR and converges to a local optimal. Motivated by the recent developments in meta-learning techniques to solve non-convex optimization problems, we propose a meta-learning based iterative algorithm for WSR maximization in a MISO downlink channel. A long-short-term-memory (LSTM) network-based meta-learning model is built to learn a dynamic optimization strategy to update the variables iteratively. The learned strategy aims to optimize each variable in a less greedy manner compared to WMMSE, which updates variables by computing their first-order stationary points at each iteration step. The proposed algorithm outperforms WMMSE significantly in the high signal to noise ratio(SNR) regime and shows the comparable performance when the SNR is low. 
+
+% Create 3 different LSTM neural networks to act as complex estimators in the NP-hard problem
+
+% Learn a less greedy update strategy and achieve better performance
+
+% Assume a MISO setting
+
+% Goes over how to solve the WMMSE problem!!!!
+
+% Establish 3 LSTMs network to optimize updating parameters
+
+% Uses an Adam optimizer for updating the parameters
+
+% Used python and PyTorch to implement algorithms
+
+% Evaluated on 1000 channel realizations IID from comple gaussian distributions
+
+% Decompose complex vectors to real and imaginary networks
+
+% Try multiple iterations at each test stage to avoid comparing bad initializations
+
+% Propose that future work should extend from MISO to MIMO
+
+\end{document}
+@inproceedings{LSTM_Net,
+	doi = {10.1109/isit45174.2021.9518251},
+	url = {https://doi.org/10.1109%2Fisit45174.2021.9518251},
+	year = {2021},
+	month = {jul},
+	publisher = {IEEE},
+	author = {Jingyuan Xia and Deniz Gunduz},
+	title = {Meta-learning Based Beamforming Design for MISO Downlink},
+	booktitle = {2021 IEEE International Symposium on Information Theory (ISIT)}
+}
+%-------------------------------------------------------------------------------
+% A Matrix Inverse-Free Implementation of the MU-MIMO WMMSE BF Algo
+
+% Abstract: The WMMSE beamforming algorithm is a popular approach to address the NP-hard weighted sum rate (WSR) maximization beamforming problem. Although it efficiently finds a local optimum, it requires matrix inverses, eigendecompositions, and bisection searches, operations that are problematic for real-time implementation. In our previous work, we considered the MU-MISO case with single-antenna receivers and effectively replaced such operations by resorting to a first-order method. Here, we consider the more general and challenging MU-MIMO case with multiple-antenna receivers. Our earlier approach does not generalize to this scenario and cannot be applied to replace all the hard-to-parallelize operations that appear in the MU-MIMO case. Thus, we propose to leverage a reformulation of the auxiliary WMMSE function given by Hu et al. By applying gradient descent and Schulz iterations, we formulate the first variant of the WMMSE algorithm applicable to the MU-MIMO case that is free from matrix inverses and other serial operations and hence amenable to both real-time implementation and deep unfolding. From a theoretical viewpoint, we establish its convergence to a stationary point of the WSR maximization problem. From a practical viewpoint, we show that in a deep-unfolding-based implementation, the matrix-inverse-free WMMSE algorithm attains, within a fixed number of iterations, a WSR comparable to the original WMMSE algorithm truncated to the same number of iterations, yet with significant implementation advantages in terms of parallelizability and real-time execution.
+
+% Provide code to replicate all results!!!
+%https://github.com/lpkg/WMMSE-deep-unfolding/tree/WMMSE-deep-unfolding-MIMO
+% Take issue with no performance gaurantee that other options have
+
+% mimo case is non-trivial since all previous simplifications require matrix inverses
+
+@ARTICLE{NO_inverse_MMSE,
+  author={Pellaco, Lissy and Jaldén, Joakim},
+  journal={IEEE Transactions on Signal Processing}, 
+  title={A Matrix-Inverse-Free Implementation of the MU-MIMO WMMSE Beamforming Algorithm}, 
+  year={2022},
+  volume={70},
+  number={},
+  pages={6360-6375},
+  doi={10.1109/TSP.2023.3238275}
+  }
+
+
+%-------------------------------------------------------------------------------
+% Deep learning for mMIMO 5G and beyond
+@ARTICLE{Intelligent_mMMIMO,
+  author={Elijah, Olakunle and Abdul Rahim, Sharul Kamal and New, Wee Kiat and Leow, Chee Yen and Cumanan, Kanapathippillai and Kim Geok, Tan},
+  journal={IEEE Access}, 
+  title={Intelligent Massive MIMO Systems for Beyond 5G Networks: An Overview and Future Trends}, 
+  year={2022},
+  volume={10},
+  number={},
+  pages={102532-102563},
+  doi={10.1109/ACCESS.2022.3208284}
+  }
+
+%-------------------------------------------------------------------------------
+% Deep Learning based Massive MIMO Beamforming
+
+% Abstract:The rapid increasing of the data volume in mobile networks forces operators to look into different options for capacity improvement. Thus, modern 5G networks became more complex in terms of deployment and management. Therefore, new approaches are needed to simplify network design and management by enabling self-organizing capabilities. In this paper, we propose a novel intelligent algorithm for performance optimization of the massive MIMO beamforming. The key novelty of the proposed algorithm is in the combination of three neural networks which cooperatively implement the deep adversarial reinforcement learning workflow. In the proposed system, one neural network is trained to generate realistic user mobility patterns, which are then used by second neural network to produce relevant antenna diagram. Meanwhile, third neural network estimates the efficiency of the generated antenna diagram returns corresponding reward to both networks. The advantage of the proposed approach is that it leans by itself and does not require large training datasets.
+
+%This paper has a GAN that generates user movement patterns and a network attempts to account for this. A further direction of research might be to add noise to this.
+%Use two adversaries and one referee network
+%THEY DON'T DO ANYTHING OTHER THAN PROPOSE IN THIS PAPER!!!!!!
+
+@INPROCEEDINGS{8525802,
+  author={Maksymyuk, Taras and Gazda, Juraj and Yaremko, Oleh and Nevinskiy, Denys},
+  booktitle={2018 IEEE 4th International Symposium on Wireless Systems within the International Conferences on Intelligent Data Acquisition and Advanced Computing Systems (IDAACS-SWS)}, 
+  title={Deep Learning Based Massive MIMO Beamforming for 5G Mobile Network}, 
+  year={2018},
+  volume={},
+  number={},
+  pages={241-244},
+  doi={10.1109/IDAACS-SWS.2018.8525802}
+}
+
+@INPROCEEDINGS{8888573,
+  author={Lovato, Ricardo and Gong, Xun},
+  booktitle={2019 IEEE International Symposium on Antennas and Propagation and USNC-URSI Radio Science Meeting}, 
+  title={Phased Antenna Array Beamforming using Convolutional Neural Networks}, 
+  year={2019},
+  volume={},
+  number={},
+  pages={1247-1248},
+  doi={10.1109/APUSNCURSINRSM.2019.8888573}
+}
+
+%-------------------------------------------------------------------------------
+%Learning-Based Massive Beamforming
+
+%Abstract: Developing resource allocation algorithms with strong real-time and high efficiency has been an imperative topic in wireless networks. Conventional optimization-based iterative resource allocation algorithms often suffer from slow convergence, especially for massive multiple-input-multiple-output (MIMO) beamforming problems. This paper studies learning-based efficient massive beamforming methods for multi-user MIMO networks. The considered massive beamforming problem is challenging in two aspects. First, the beamforming matrix to be learned is quite high-dimensional in case with a massive number of antennas. Second, the objective is often time-varying and the solution space is not fixed due to some communication requirements. All these challenges make learning representation for massive beamforming an extremely difficult task. In this paper, by exploiting the structure of the most popular WMMSE beamforming solution, we propose convolutional massive beamforming neural networks (CMBNN) using both supervised and unsupervised learning schemes with particular design of network structure and input/output. Numerical results demonstrate the efficacy of the proposed CMBNN in terms of 
+
+% Optimization problems are too large for many antennas
+
+% Simple formulations like zero forcing are too simple for many antennas or users
+
+@misc{lu2020learningbased,
+      title={Learning-Based Massive Beamforming}, 
+      author={Siyuan Lu and Shengjie Zhao and Qingjiang Shi},
+      year={2020},
+      eprint={2009.09406},
+      archivePrefix={arXiv},
+      primaryClass={eess.SP}
+}
+
+%-------------------------------------------------------------------------------
+% A Review of the State of the Art and Future Challenges of Deep Learning-Based Beamforming
+
+% Abstract:The key objective of this paper is to explore the recent state-of-the-art artificial intelligence (AI) applications on the broad field of beamforming. Hence, a multitude of AI-oriented beamforming studies are thoroughly investigated in order to correctly comprehend and profitably interpret the AI contribution in the beamforming performance. Starting from a brief overview of beamforming, including adaptive beamforming algorithms and direction of arrival (DOA) estimation methods, our analysis probes further into the main machine learning (ML) classes, the basic neural network (NN) topologies, and the most efficient deep learning (DL) schemes. Subsequently, and based on the prior aspects, the paper explores several concepts regarding the optimal use of ML and NNs either as standalone beamforming and DOA estimation techniques or in combination with other implementations, such as ultrasound imaging, massive multiple-input multiple-output structures, and intelligent reflecting surfaces. Finally, particular attention is drawn on the realization of beamforming or DOA estimation setups via DL topologies. The survey closes with various important conclusions along with an interesting discussion on potential future aspects and promising research challenges.
+
+% A review of the different ways that DNNs are applied to Beamforming.
+
+% refs 8- 10 use deep networks
+
+% Most common methods Least mean squares (LMS) and normalized LMS (NLMS) take many iterations to converge
+% do not rapidly converge, so perform poorly for tracking purposes.
+% Alternatives have singularity issues
+
+% [33] selects an eigen-beam set
+% [37] obtains precise results of DOAs with generalization
+% Support Vector Machine is very useful here
+
+% Includes DOA estimation, mMIMO, and 
+% Traditional techniques fail in moving situations since they are evolutionary optimziation problems
+% [66] calcualtes array weights in noise using a CNN and a BLSTM
+% [67] determines the phases required for the array pattern
+% [68] has convolutional massive beamforming NNs (CMBNN)
+% [71] outperforms the Maximum likelihood estimator in efficiency for multiple unbknown sources
+% [78] does not require channel state information unlike other methods
+% ...
+
+@ARTICLE{Review_DL_BF,
+  author={Kassir, Haya Al and Zaharis, Zaharias D. and Lazaridis, Pavlos I. and Kantartzis, Nikolaos V. and Yioultsis, Traianos V. and Xenos, Thomas D.},
+  journal={IEEE Access}, 
+  title={A Review of the State of the Art and Future Challenges of Deep Learning-Based Beamforming}, 
+  year={2022},
+  volume={10},
+  number={},
+  pages={80869-80882},
+  doi={10.1109/ACCESS.2022.3195299}
+  }
+
+%-------------------------------------------------------------------------------
+%Deep Networks for IOT
+
+% Abstract: The high-density Industrial Internet of Things needs to meet the requirements of high-density device access and massive data transmission, which requires the support of multiple-input multiple-output (MIMO) antenna cognitive systems to keep high throughput. In such a system, spectral efficiency (SE) optimization based on dynamic power allocation is an effective way to enhance the network throughput as the channel quality variations significantly affect the spectral efficiency performance. Deep learning methods have illustrated the ability to efficiently solve the non-convexity of resource allocation problems induced by the channel multi-path and inter-user interference effects. However, current real-valued deep-learning-based power allocation methods have failed to utilize the representational capacity of complex-valued data as they regard the complex-valued channel data as two parts: real and imaginary data. In this paper, we propose a complex-valued power allocation network (AttCVNN) with cross-channel and in-channel attention mechanisms to improve the model performance where the former considers the relationship between cognitive users and the primary user, i.e., inter-network users, while the latter focuses on the relationship among cognitive users, i.e., intra-network users. Comparison experiments indicate that the proposed AttCVNN notably outperforms both the equal power allocation method (EPM) and the real-valued and the complex-valued fully connected network (FNN, CVFNN) and shows a better convergence rate in the training phase than the real-valued convolutional neural network (AttCNN).
+
+%Have a complex space which is different from the regular space ...
+%Use an attention mechanism to get complex values to work with the neural network.
+
+@article{Through_Max,
+	title={Throughput Maximization Using Deep Complex Networks for Industrial Internet of Things}, 
+	volume={23}, 
+	ISSN={1424-8220}, 
+	url={http://dx.doi.org/10.3390/s23020951}, 
+	DOI={10.3390/s23020951}, 
+	number={2}, 
+	journal={Sensors}, 
+	publisher={MDPI AG}, 
+	author={Sun, Danfeng and Xi, Yanlong and Yaqot, Abdullah and Hellbrück, Horst and Wu, Huifeng}, 
+	year={2023}, 
+	month={Jan}, 
+	pages={951} 
+}
+
+%-------------------------------------------------------------------------------
+%************************ Domain Generalization ******************************** 
+%-------------------------------------------------------------------------------
+
+%-------------------------------------------------------------------------------
+%Domain Generalization in Machine Learning Models for Wireless Communications: Concepts, State-of-the-Art, and Open Issues
+
+%Abstract: Data-driven machine learning (ML) is promoted as one potential technology to be used in next-generation wireless systems. This led to a large body of research work that applies ML techniques to solve problems in different layers of the wireless transmission link. However, most of these applications rely on supervised learning which assumes that the source (training) and target (test) data are independent and identically distributed (i.i.d). This assumption is often violated in the real world due to domain or distribution shifts between the source and the target data. Thus, it is important to ensure that these algorithms generalize to out-of-distribution (OOD) data. In this context, domain generalization (DG) tackles the OOD-related issues by learning models on different and distinct source domains/datasets with generalization capabilities to unseen new domains without additional finetuning. Motivated by the importance of DG requirements for wireless applications, we present a comprehensive overview of the recent developments in DG and the different sources of domain shift. We also summarize the existing DG methods and review their applications in selected wireless communication problems, and conclude with insights and open questions.
+
+%Few studies consider domain generalization in connection with Beamforming
+
+%LSTM modules learn the inner-loop of optimzation strategy [145]
+
+
+@ARTICLE{Domain_Gen,
+  author={Akrout, Mohamed and Feriani, Amal and Bellili, Faouzi and Mezghani, Amine and Hossain, Ekram},
+  journal={IEEE Communications Surveys & Tutorials}, 
+  title={Domain Generalization in Machine Learning Models for Wireless Communications: Concepts, State-of-the-Art, and Open Issues}, 
+  year={2023},
+  volume={},
+  number={},
+  pages={1-1},
+  doi={10.1109/COMST.2023.3326399}
+}
+
+%-------------------------------------------------------------------------------
+%************************ Motivation and Background **************************** %-------------------------------------------------------------------------------
+
+%-------------------------------------------------------------------------------
+%Massive MIMO in the UL/DL of Cellular Networks: How Many Antennas Do We Need?
+
+%Abstract: We consider the uplink (UL) and downlink (DL) of non-cooperative multi-cellular time-division duplexing (TDD) systems, assuming that the number N of antennas per base station (BS) and the number K of user terminals (UTs) per cell are large. Our system model accounts for channel estimation, pilot contamination, and an arbitrary path loss and antenna correlation for each link. We derive approximations of achievable rates with several linear precoders and detectors which are proven to be asymptotically tight, but accurate for realistic system dimensions, as shown by simulations. It is known from previous work assuming uncorrelated channels, that as N→∞ while K is fixed, the system performance is limited by pilot contamination, the simplest precoders/detectors, i.e., eigenbeamforming (BF) and matched filter (MF), are optimal, and the transmit power can be made arbitrarily small. We analyze to which extent these conclusions hold in the more realistic setting where N is not extremely large compared to K. In particular, we derive how many antennas per UT are needed to achieve η% of the ultimate performance limit with infinitely many antennas and how many more antennas are needed with MF and BF to achieve the performance of minimum mean-square error (MMSE) detection and regularized zero-forcing (RZF), respectively.
+
+@ARTICLE{How_many_ant,
+  author={Hoydis, Jakob and ten Brink, Stephan and Debbah, Merouane},
+  journal={IEEE Journal on Selected Areas in Communications}, 
+  title={Massive MIMO in the UL/DL of Cellular Networks: How Many Antennas Do We Need?}, 
+  year={2013},
+  volume={31},
+  number={2},
+  pages={160-171},
+  doi={10.1109/JSAC.2013.130205}
+  }
+
+%-------------------------------------------------------------------------------
+% Minimum Mean-Square error
+
+@INPROCEEDINGS{MMSE_Apps,
+  author={Zhou, Jie and Zhu, Yunmin},
+  booktitle={2006 International Conference on Computational Intelligence and Security}, 
+  title={The Linear Minimum Mean-Square Error Estimation with Constraints and Its Applications}, 
+  year={2006},
+  volume={2},
+  number={},
+  pages={1801-1804},
+  doi={10.1109/ICCIAS.2006.295373}
+  }
+
+%-------------------------------------------------------------------------------
+% Minimum Mean-Square error
+
+% Abstract: Consider the multiple-input multiple-output (MIMO) interfering broadcast channel whereby multiple base stations in a cellular network simultaneously transmit signals to a group of users in their own cells while causing interference to each other. The basic problem is to design linear beamformers that can maximize the system throughput. In this paper, we propose a linear transceiver design algorithm for weighted sum-rate maximization that is based on iterative minimization of weighted mean-square error (MSE). The proposed algorithm only needs local channel knowledge and converges to a stationary point of the weighted sum-rate maximization problem. Furthermore, the algorithm and its convergence can be extended to a general class of sum-utility maximization problem. The effectiveness of the proposed algorithm is validated by numerical experiments.
+
+%This is the formulation typically referred to when the MMSE algorithm is implemented for MIMO.
+
+% This paper claims to have a "low complexity" solution, but everyone wants to replace it because of its complexity.
+
+@ARTICLE{Iteratively_MMSE,
+  author={Shi, Qingjiang and Razaviyayn, Meisam and Luo, Zhi-Quan and He, Chen},
+  journal={IEEE Transactions on Signal Processing}, 
+  title={An Iteratively Weighted MMSE Approach to Distributed Sum-Utility Maximization for a MIMO Interfering Broadcast Channel}, 
+  year={2011},
+  volume={59},
+  number={9},
+  pages={4331-4340},
+  doi={10.1109/TSP.2011.2147784}
+  }
+
