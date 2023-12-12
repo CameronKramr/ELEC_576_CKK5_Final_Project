@@ -1,0 +1,3 @@
+[submodule "WMMSE-deep-unfolding"]
+	path = WMMSE-deep-unfolding
+	url = https://github.com/lpkg/WMMSE-deep-unfolding
