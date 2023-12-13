@@ -3,11 +3,117 @@
 %-------------------------------------------------------------------------------
 
 %-------------------------------------------------------------------------------
+% Minimum Mean Squared Error interference alignment
+
+%Abstract: To achieve the full multiplexing gain of MIMO interference networks at high SNRs, the interference from different transmitters must be aligned in lower-dimensional subspaces at the receivers. Recently a distributed ¿max-SINR¿ algorithm for precoder optimization has been proposed that achieves interference alignment for sufficiently high SNRs. We show that this algorithm can be interpreted as a variation of an algorithm that minimizes the sum Mean Squared Error (MSE). To maximize sum utility, where the utility depends on rate or SINR, a weighted sum MSE objective is used to compute the beams, where the weights are updated according to the sum utility objective. We specify a class of utility functions for which convergence of the sum utility to a local optimum is guaranteed with asynchronous updates of beams, receiver filters, and utility weights. Numerical results are presented, which show that this method achieves interference alignment at high SNRs, and can achieve different points on the boundary of the achievable rate region by adjusting the MSE weights.
+
+% Proposes a Weighted Sum Minimum Mean Squared Error Algorithm
+
+% Introduction:
+
+% Limited number of non-interfering channels (2N -1)
+
+% Measure performance with a utility function
+
+% determine the precoders to maximize the sum utility
+
+% seek a distributed algorithm with limited information exchange
+
+% each precoding matrix has rank one
+
+% Rate is determined by the received Signal-to-Interference Plus Noise Ratio
+
+% Algorithm requires each receiver to know: 
+	% It's own channle matrix
+	% combined cross-channel-receiver gains
+
+% Two stage algorithm:
+	% adapted in an inner loop
+	%weight update to match operating point
+
+% System Model:
+	% Channel H_{jk} is complex channel gains between N antennas of transmitter k and N antennas of receiver j
+	% Do not consider multiplexing (each user only transmits one beam)
+	%v_k is the beamforming matrix
+		%subject to power constraints: ||v||_2 <= 1
+	% Linear receivers are assumed
+
+% Steps:
+%	1. Initialize beamformers v1,...,vk arbitrarily
+%	2. Optimize the receive filters g1,... assuming fixed beamformers
+%	3. Optimize beamformers v1,...,vk assuming fixed receivers
+%	4. Repeat from 2. until convergence
+
+@INPROCEEDINGS{5470055,
+  author={Schmidt, David A. and Shi, Changxin and Berry, Randall A. and Honig, Michael L. and Utschick, Wolfgang},
+  booktitle={2009 Conference Record of the Forty-Third Asilomar Conference on Signals, Systems and Computers}, 
+  title={Minimum Mean Squared Error interference alignment}, 
+  year={2009},
+  volume={},
+  number={},
+  pages={1106-1110},
+  doi={10.1109/ACSSC.2009.5470055}}
+
+%-------------------------------------------------------------------------------
+% Deep unfolding of the weighted MMSE beamforming algorithm
+
+% Original idea of using a neural network to optimize the unfolded problem of the WMMSE algorithm
+
+@misc{pellaco2020deep,
+      title={Deep unfolding of the weighted MMSE beamforming algorithm}, 
+      author={Lissy Pellaco and Mats Bengtsson and Joakim Jaldén},
+      year={2020},
+      eprint={2006.08448},
+      archivePrefix={arXiv},
+      primaryClass={eess.SP}
+}
+
+%-------------------------------------------------------------------------------
 % Meta-learning Based Beamforming Design for MISO Downlink
 
 %Abstract Downlink beamforming is an essential technology for wireless cellular networks; however, the design of beamforming vectors that maximize the weighted sum rate (WSR) is an NP-hard problem and iterative algorithms are typically applied to solve it. The weighted minimum mean square error (WMMSE) algorithm is the most widely used one, which iteratively minimizes the WSR and converges to a local optimal. Motivated by the recent developments in meta-learning techniques to solve non-convex optimization problems, we propose a meta-learning based iterative algorithm for WSR maximization in a MISO downlink channel. A long-short-term-memory (LSTM) network-based meta-learning model is built to learn a dynamic optimization strategy to update the variables iteratively. The learned strategy aims to optimize each variable in a less greedy manner compared to WMMSE, which updates variables by computing their first-order stationary points at each iteration step. The proposed algorithm outperforms WMMSE significantly in the high signal to noise ratio(SNR) regime and shows the comparable performance when the SNR is low. 
 
+% Channel Formulation:
+	% Multiple Input single output downlink channel
+	% Base station with M transmit antenna serves N single-antenna users
+	% x_i ~ CN(0, 1) independent data symbol sent to ith user
+	% h_i ~ CN(0, I_m) is the channel between base station and ith user
+	% v_i is the beamforming vector for user i
+	 
+
 % Create 3 different LSTM neural networks to act as complex estimators in the NP-hard problem
+	% V is the beamforming vector for a specific user
+	% h_i is the channel vector for a specific user
+	% alpha is the user weight specified by the system designer
+	% P is the total power
+	% e_i is the mean-squared error
+	% u_i is the receiver gain
+	% w_i is a positive user weight
+	% sigma is the circular complex noise
+	
+% solved by a block coordinate descent
+	% initializes V to satisfy the power constraint
+	% iteratively update w, u, and V until a stop criterion is met
+	% mu is computed by bisection search
+
+% propose a meta-based WMMSE algorithm to learn adaptive update strategy of each variable V, w, u
+	% min(F(u,w,V)) is overall problem
+	% min(f(u)), min(f(w)), min(f(V)) is the sub problem
+	
+% LSTM formulation:
+	% theta_V, theta_u, theta_w are the parameters of the 3 LSTM nets
+	% C_V, C_u, C_w are their cell states
+	% each LSTM takes the gradients of the sub-problem
+	% outputs of the LSTM networks include updating step for variables
+		% and the update to the cell state
+	% meta learner networks: m_V, m_w, m_mu
+	% Equation 10 shows what is being attempted
+	% Update using the adam regularizer with the global loss function
+	% Need to make sure that the output is constrained by the power
+
+% The training of a deep learning model IS part of the solution
+	% As opposed to most other solutions where learning takes place
+	% prior to deployment. 
 
 % Learn a less greedy update strategy and achieve better performance
 
@@ -201,7 +307,7 @@
 
 @ARTICLE{Domain_Gen,
   author={Akrout, Mohamed and Feriani, Amal and Bellili, Faouzi and Mezghani, Amine and Hossain, Ekram},
-  journal={IEEE Communications Surveys & Tutorials}, 
+  journal={IEEE Communications Surveys and Tutorials}, 
   title={Domain Generalization in Machine Learning Models for Wireless Communications: Concepts, State-of-the-Art, and Open Issues}, 
   year={2023},
   volume={},
@@ -214,9 +320,53 @@
 %************************ Motivation and Background **************************** %-------------------------------------------------------------------------------
 
 %-------------------------------------------------------------------------------
+%Meta-learning based Alternating Minimization Algorithm for Non-convex Optimization
+
+%Abstract: In this paper, we propose a novel solution for non-convex problems of multiple variables, especially for those typically solved by an alternating minimization (AM) strategy that splits the original optimization problem into a set of sub-problems corresponding to each variable, and then iteratively optimize each sub-problem using a fixed updating rule. However, due to the intrinsic non-convexity of the original optimization problem, the optimization can usually be trapped into spurious local minimum even when each sub-problem can be optimally solved at each iteration. Meanwhile, learning-based approaches, such as deep unfolding algorithms, are highly limited by the lack of labelled data and restricted explainability. To tackle these issues, we propose a meta-learning based alternating minimization (MLAM) method, which aims to minimize a partial of the global losses over iterations instead of carrying minimization on each sub-problem, and it tends to learn an adaptive strategy to replace the handcrafted counterpart resulting in advance on superior performance. Meanwhile, the proposed MLAM still maintains the original algorithmic principle, which contributes to a better interpretability. We evaluate the proposed method on two representative problems, namely, bi-linear inverse problem: matrix completion, and non-linear problem: Gaussian mixture models. The experimental results validate that our proposed approach outperforms AM-based methods in standard settings, and is able to achieve effective optimization in challenging cases while other comparing methods would typically fail. 
+
+% Proposes a Meta-Learning based Alternating Minimization (MLAM) Algorithm
+
+% MLAM is composed of two-level meta-learning
+% enables inner optimization to be continuously udpated
+% replaces the convex, frozen and handcrafted portions of non-convex problems with deep neural networks
+% Composed of two level meta-learning: upper and ground level
+
+% Upper level learns on non-convex problems to find how to adapt to new problems
+% Ground level learns on a sequence of sub-problems find how to adapt to sequence of sub-problems
+
+% AM -> Alternating Minimization
+
+% Proposed LSTM-MLAM
+% Update the parameters of the MetaNet with respect to accumulated global losses
+% Memory is the important part
+% H(i) = LSTM(grad(x), C, Theta)
+
+@misc{xia2022metalearning,
+      title={Meta-learning based Alternating Minimization Algorithm for Non-convex Optimization}, 
+      author={Jingyuan Xia and Shengxi Li and Jun-Jie Huang and Imad Jaimoukha and Deniz Gunduz},
+      year={2022},
+      eprint={2009.04899},
+      archivePrefix={arXiv},
+      primaryClass={cs.LG}
+}
+
+%-------------------------------------------------------------------------------
 %Massive MIMO in the UL/DL of Cellular Networks: How Many Antennas Do We Need?
 
 %Abstract: We consider the uplink (UL) and downlink (DL) of non-cooperative multi-cellular time-division duplexing (TDD) systems, assuming that the number N of antennas per base station (BS) and the number K of user terminals (UTs) per cell are large. Our system model accounts for channel estimation, pilot contamination, and an arbitrary path loss and antenna correlation for each link. We derive approximations of achievable rates with several linear precoders and detectors which are proven to be asymptotically tight, but accurate for realistic system dimensions, as shown by simulations. It is known from previous work assuming uncorrelated channels, that as N→∞ while K is fixed, the system performance is limited by pilot contamination, the simplest precoders/detectors, i.e., eigenbeamforming (BF) and matched filter (MF), are optimal, and the transmit power can be made arbitrarily small. We analyze to which extent these conclusions hold in the more realistic setting where N is not extremely large compared to K. In particular, we derive how many antennas per UT are needed to achieve η% of the ultimate performance limit with infinitely many antennas and how many more antennas are needed with MF and BF to achieve the performance of minimum mean-square error (MMSE) detection and regularized zero-forcing (RZF), respectively.
+
+% Considers uplink and downlink of a non-cooperative multi-cellular time-division duplexing system
+
+% Create a model that accounts for channel estimation
+
+% Pilot contamination is accounted for
+
+% Derive approximations of achievable rates with several linear predocders
+
+% System performance is limited by pilot contaminations
+
+% System Model:
+%	
 
 @ARTICLE{How_many_ant,
   author={Hoydis, Jakob and ten Brink, Stephan and Debbah, Merouane},
@@ -262,4 +412,14 @@
   pages={4331-4340},
   doi={10.1109/TSP.2011.2147784}
   }
+
+%-------------------------------------------------------------------------------
+% PyTorch MAML
+
+@misc{pytorch_maml,
+  title={maml in pytorch - re-implementation and beyond},
+  author={Mu, Fangzhou},
+  howpublished="\url{https://github.com/fmu2/PyTorch-MAML}",
+  year={2020}
+}
 
