@@ -1,12 +1,14 @@
 \documentclass[journal]{IEEEtran}
+
 \usepackage{graphicx}
 \usepackage{url}
-%\graphicspath{ {./figures/} }
-
 \usepackage{cite}
 \usepackage{amsmath}
 \usepackage{algorithmic}
 \usepackage{amssymb}
+\usepackage{hyperref}
+\usepackage{listings}
+
 \hyphenation{op-tical net-works semi-conduc-tor}
 
 
@@ -131,12 +133,12 @@ A = \sum^{N}_{i=1}\alpha_i w_i |u_i|^2h_i h^H_i
 
 The above equations were derived in more detail by \cite{Deep_Unfolding} and the interested reader is directed there for additional details. The presented equations are necessary for understanding the problem statement and explaining the 
 
-This section will describe in detail the problem formulation which \cite{LSTM} used LSTMs to solve and which served as the basis of the work explored here and in \cite{LSTM}. The way the WMMSE algorithm works is to iteratively update each variable $u_i$, $w_i$, and $V_i$ with the respective update functions shown in Equations \ref{eq:u_i_up}, \ref{eq:w_i_up}, and \ref{eq:v_i_up} respectively. The update procedure is repeated until an acceptable error is reached. 
+This section will describe in detail the problem formulation which \cite{LSTM_Net} used LSTMs to solve and which served as the basis of the work explored here and in \cite{LSTM_Net}. The way the WMMSE algorithm works is to iteratively update each variable $u_i$, $w_i$, and $V_i$ with the respective update functions shown in Equations \ref{eq:u_i_up}, \ref{eq:w_i_up}, and \ref{eq:v_i_up} respectively. The update procedure is repeated until an acceptable error is reached. 
 
-As was shown above, the original formulation for updating $V_i$ involved a matrix inversion, so deep unfolding was implemented by \cite{Deep_Unfolding} to circumvent the complications of calculating an inversion directly. Coincidentally, unfolding in this way creates a continuous path for gradients to flow within the entire problem which \cite{LSTM} used to replace the update functions with LSTM DNNs that learn how to optimize the variables $u_i$, $w_i$, and $v_i$ for a given channel $H$.
+As was shown above, the original formulation for updating $V_i$ involved a matrix inversion, so deep unfolding was implemented by \cite{Deep_Unfolding} to circumvent the complications of calculating an inversion directly. Coincidentally, unfolding in this way creates a continuous path for gradients to flow within the entire problem which \cite{LSTM_Net} used to replace the update functions with LSTM DNNs that learn how to optimize the variables $u_i$, $w_i$, and $v_i$ for a given channel $H$.
 
 \subsection{Recurrent Neural Network for WMMSE}
-The authors in \cite{LSTM} built their architecture following the work of \cite{Deep_Unfolding} who applied recent advancements in deploying DNNs in unfolded optimization problems. Specifically, \cite{Deep_Unfolding} described the steps as in Table \ref{list:DNN_Optim}.
+The authors in \cite{LSTM_Net} built their architecture following the work of \cite{Deep_Unfolding} who applied recent advancements in deploying DNNs in unfolded optimization problems. Specifically, \cite{Deep_Unfolding} described the steps as in Table \ref{list:DNN_Optim}.
 
 \begin{enumerate}
 \item{Map iterations of optimization algorithm to DNN}
@@ -145,34 +147,83 @@ The authors in \cite{LSTM} built their architecture following the work of \cite{
 \label{list:DNN_Optim}
 \end{enumerate}
 
-Following the above algorithm, the authors in \cite{LSTM} used Tensorflow to create three LSTM networks, one for learning to update each variable $u_i$, $w_i$, and $v_i$ based on the global loss function. This preserved the original structure of the unfolded WMMSE problem and creates the following algorithm as published by \cite{LSTM}:
+Following the above algorithm, the authors in \cite{LSTM_Net} used Tensorflow to create three LSTM networks, one for learning to update each variable $u_i$, $w_i$, and $v_i$ based on the global loss function. This preserved the original structure of the unfolded WMMSE problem and creates the following algorithm as published by \cite{LSTM_Net}:
 
 \begin{figure}[h]%
 \includegraphics[width=3.25in]{assets/9518251-alg-1-source-large.png}%
-\caption{Algorithm from \cite{LSTM} for implementing the unfolded WMMSE algorithm using DNNs. Note that $m_u$, $m_w$, $m_V$ represent the neural networks for updating each variable respectively. Furthermore, $C_{u,w,V}$ represent the internal state of each cell for the respective parameter%
+\caption{Algorithm from \cite{LSTM_Net} for implementing the unfolded WMMSE algorithm using DNNs. Note that $m_u$, $m_w$, $m_V$ represent the neural networks for updating each variable respectively. Furthermore, $C_{u,w,V}$ represent the internal state of each cell for the respective parameter}%
 \label{fig:LSTM_Algo}%
 \end{figure}
 
-The algorithm in figure \ref{fig:LSTM_Algo} shows the complete algorithm implemented by \cite{LSTM} that was to be replicated and improved in this paper. Further discussion for the model will be discussed in the following section.
+The algorithm in figure \ref{fig:LSTM_Algo} shows the complete algorithm implemented by \cite{LSTM_Net} that was to be replicated and improved in this paper. Further discussion for the model will take place in the following section.
 
 %-------------------------------------------------------------------------------
 %                          Experimentation and Model
 %-------------------------------------------------------------------------------
-\section{Experimentation and Model}
-Using the above formulation of the problem, the following graph shows the attempted graph 
-%-------------------------------------------------------------------------------
-%                          Results
-%-------------------------------------------------------------------------------
-\section{Results}
-\subsection{Automatic Differentiation}
-\subsection{Exploding Gradients}
+\section{Experimentation, Model, and Results}
+The key stages for the planned experimentation was to first get a working comparison using the traditional WMMSE algorithm then to implement the design in \cite{LSTM_Net}, and then to exchange the LSTM modules with GRU modules and to do various testing of the hyper-parameters to observe the effects of using a different number of hidden layers. All of this was experimentation that \cite{LSTM_Net} did not perform and which would have revealed interesting new knowledge about applying DNNs in unsupervised learning optimization settings. Specifically, how much computation is actually required for the LSTM WMMSE algorithm to solve for beam-weights in wireless MISO systems. Several difficulties prevented this which will be discussed in some detail.
+
+\subsection{PyTorch Implementation} 
+Using the formulation of the problem in \ref{fig:LSTM_Algo}, the following graph shows the attempted implementation:
+
+\begin{figure}[h]%
+\includegraphics[width=3.25in]{assets/image-20231115093829461.png}%
+\caption{The graph showing WMMSE implemented using RNNs for updating the values.}%
+\label{fig:LSTM_Algo}%
+\end{figure}
+
+The unfolded LSTM WMMSE algorithm was implemented using a single class to contain all of the relevant parts so that everything would be self-contained in-order to facilitate future experimentation on various configurations. There were three individual LSTM networks, supporting variables, and an Adam optimizer for tuning the LSTM weights along with all the necessary helper functions to calculate the portions of the algorithm. More detail can be found in the code submission portion of this assignment which is thoroughly documented.
+
+\subsection{WMMSE Deep Unfolding Replication}
+The authors in \cite{Deep_Unfolding} made their code for the unfolded WMMSE algorithm public on GitHub which served as both a source of confusion and invaluable reference. The code provided by \cite{Deep_Unfolding} would have served as a benchmark to compare the performance of any simpler RNN on the beamforming problem. To this end, the results of the WMMSE algorithm were replicated and can be seen in Figure \ref{fig:WMMSE_ref}. Since much of the other code from \cite{Deep_Unfolding} used Tensorflow--which was unfamiliar--that part was not used. Unfortunately, since the results from \cite{LSTM_Net} could not be replicated with the details provided in their paper, no comparison was able to be performed.
+
+\begin{figure}[h]%
+\includegraphics[width=3.25in]{assets/WMMSE_Working_Other_Peeps.png}%
+\caption{WMMSE algorithm results implemented by \cite{Deep_Unfolding} showing the algorithm successfully converging to a solution. The code that generated this figure was copied from \cite{Deep_Unfolding} in order to be used as a basis of comparison.}%
+\label{fig:WMMSE_Working}%
+\end{figure}
+
+Figure \ref{fig:WMMSE_Working} shows the WMMSE implementation by \cite{Deep_Unfolding} successfully solving for the beamweights in a 4 user 4 transmit antenna system. This was 
+
+\subsection{Implementation Difficulties}
+There were a number of substantial difficulties encountered when attempting to implement the algorithm described in \cite{LSTM_Net}. Ultimately, these difficulties prevented any additional analysis, but this section will explore them in detail in-place of novel results.
+
+The first major difficulty encountered was related to the novel model type used in this project. All of the assignments this semester used supervised learning, so the challenges inherent to creating unsupervised models were novel and substantial. Learning how to make the PyTorch AutoGrad function ``happy'' was by far the most challenging. A particularly painful lesson was learning to detach old intermediate tensors after stepping the optimizer function. 
+
+Implementing many of the update functions was difficult since many of them required ``in-place'' operations since many of the vectors were significantly dependent on position. For example, the error expectation vector, $e$ implemented as follows:
+
+\begin{figure}[h]%
+\includegraphics[width=3.25in]{assets/MSE_Algo.png}%
+\caption{Calculating the Mean Squared Error vector for the neural network. Notice that many of the operations are ``in-place''. This is according to how MSE should be calculated to \cite{LSTM_Net}, but doing so has troublesome effects on the Autograd in PyTorch due to the in-place operations}%
+\label{fig:LSTM_Algo}%
+\end{figure}
+
+I am still not sure that the gradient properly flows through this function, but did not have time to properly test it. I suspect that it does not, or that there are other errors in my implementation since the gradient diverges.
+
+The second difficulty was massive uncertainty in implementation details of the algorithm. This was because the \cite{LSTM_Net} did not publish their code and were not very specific when describing which functions were used. This was further complicated by mistaking the code of \cite{Deep_Unfolding} for the LSTM module early on. The confusion this caused created major delays in development. After realizing this mistake, I did not have time to properly debug my algorithm implementation.
+
+\subsection{Results}
+After getting to a somewhat functional state, the LSTM network would always diverge. Many techniques were attempted to mitigate this from changing the initialization, to normalizing the inputs to the LSTMs, but nothing worked.
+
+\begin{figure}[h]%
+\includegraphics[width=3.25in]{assets/Exploding_Loss_Normalization.png}%
+\caption{Diverging loss function of LSTM version of WMMSE}%
+\label{fig:LSTM_Algo}%
+\end{figure}
+
+I then instrumented every part of the gradient to attempt to find the issue, but despite all my efforts, the gradient would not remain contained.
+
 %-------------------------------------------------------------------------------
 %                          Conclusion
 %-------------------------------------------------------------------------------
 \section{Conclusion}
+Ultimately, I learned a large amount about implementing unsupervised learning algorithms using PyTorch. Specifically, how to make sure that the auto-gradients assemble properly. Unfortunately, because the implementation details were not specific enough, I was not able to successfully replicate the work of \cite{LSTM_Net}. This likely relates to my lack of training in optimization which likely would have made many of my questions self-evident. Eventually, I figured out an algorithm that I thought would be similar enough to the correct algorithm, but which clearly did not work. After I finally got the PyTorch autogradient to function, I was hit with a wall of diverging gradients, and despite attempting various initialization techniques, normalizing the gradient inputs to the LSTMs, I was not able to train a network to solve the optimization problem. Future work would focus on getting a working network to solve the algorithm, and re-working the helper functions to be transparent to the gradient function.  
+
 \section{Roles}
 Cameron Kramr was the sole member of this group and performed all roles.
+
 \section{Code Availability}
+\url{https://github.com/CameronKramr/ELEC_576_CKK5_Final_Project}
 
 \nocite{*}
 \bibliographystyle{plain}
